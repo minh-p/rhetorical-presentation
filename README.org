@@ -1,0 +1,63 @@
+#+title: README
+#+author: HMP
+#+date: <2023-08-25 Fri>
+
+* Project Information
+This project is for submission for a AP Lang Summer Project due on 8/28/2023.
+It will include the concepts present from the textbook /Everything is An Argument/ on chapter 1 through 4.
+Everything will be stored in the source code of the program. That includes the images and their correct choices that align with each image's purpose and appeal. Players are to choose from an interface that select a reponse categorized by purpose and appeal. Every thing will be typed and hand crafted.
+** Data
+Responses and data will be a single JSON file within a directory called data/.
+As you can see, the presentations, will have a description about an image that's shown as presentation, its image link, and the words we can say.
+#+BEGIN_SRC javascript
+{
+    "numberOfSlides": "10",
+    "purposes": {
+        "inform": {
+            "logos": [
+                [
+                    "https://t3.ftcdn.net/jpg/00/38/50/86/360_F_38508649_mkoKMWJbMD1vfBGGOQ4DZXwKYsvJ8b2k.jpg",
+                    "You see a newspaper with details about a survey toward students who are struggling in school. The survey states that more than 50% of students struggle due to a lack of guidance out of...",
+                    "Investors,  there is a great current demand in the market for a education technology system that will allow students to ask anonymous questions to a trusted adult on campus with only a username and password to authenticate their account with the school's access code. As you can see in our county's recent newspaper, students do not have access to a great source of guidance. When asked, they either said it was hard to reach out for guidance while others said they were not comfortable showing up in person. Some of them would like to be anonymous while still being able to keep a line of conversation."
+                ]
+            ],
+        "decisions": {
+        },
+        "explore": {
+        }
+    }
+}
+#+END_SRC
+If the player chooses the wrong option, then there will be a negative reaction from an investor. These reactions will be stored in a JSON file also.
+#+BEGIN_SRC javascript
+{
+    "investors": ["All", "Elon Musk", "Donald Trump", "Jeff Bezos", "Kevin O' Leary", "Mark Cuban", "Barbara Corcoran", "Lori Greiner"],
+    "lines": [
+        "positive": [" nods in approval", " smiles", " gives a thumbs-up", " claps", " laughs", ": Incredible!", ": Marvelous!"],
+        "negative": [" squints eyes in frustration", " looks confused", " is angered", ": 'IS THIS A JOKE?'"],
+        "didNotFinish": ": 'Sorry guys, we ran out of time'"
+    ]
+}
+#+END_SRC
+** MVP
+Player will be in game as soon as they access the site. The game will be on the client side. No server stuff required.
+They will be shown the first slide with images and descriptions and a timer for 15 minutes as presentation. (I will just use a [[https://github.com/vydimitrov/react-countdown-circle-timer][library]] for the timer.)
+*** Plan of Implementation (States)
+I believe that for the points that the player accumulate, we will have to use react states.
+There will also be one for each the UI states:
+1. Is selecting response
+   a. If Yes, what purpose category if they choose.
+      a. If they haven't chosen a category, show UI where they could select.
+      b. If they have chosen a category, show UI where they could select an appeal.
+         a. If they have selected an appeal, show the correct list.
+         b. If they haven't selected an appeal, show them the list to select from.
+   b. If not (that means they have a response)
+      a. If player selected correct response. increase their points by one.
+         a. Increase their slide by 1.
+         b. Clear out other states
+      b. If the player did not select the correct response.
+         a. Stay on the same slide and decrease their points by one.
+         b. Claer out other states.
+   c. Player presses the back button.
+      a. If they have chosen an appeal. Remove that state.
+      b. If the player have chosen a purpose. Remove that state.
