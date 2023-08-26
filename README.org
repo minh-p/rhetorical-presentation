@@ -46,18 +46,18 @@ They will be shown the first slide with images and descriptions and a timer for 
 I believe that for the points that the player accumulate, we will have to use react states.
 There will also be one for each the UI states:
 1. Is selecting response
-   a. If Yes, what purpose category if they choose.
-      a. If they haven't chosen a category, show UI where they could select.
-      b. If they have chosen a category, show UI where they could select an appeal.
-         a. If they have selected an appeal, show the correct list.
-         b. If they haven't selected an appeal, show them the list to select from.
-   b. If not (that means they have a response)
-      a. If player selected correct response. increase their points by one.
-         a. Increase their slide by 1.
-         b. Clear out other states
-      b. If the player did not select the correct response.
-         a. Stay on the same slide and decrease their points by one.
-         b. Claer out other states.
-   c. Player presses the back button.
-      a. If they have chosen an appeal. Remove that state.
-      b. If the player have chosen a purpose. Remove that state.
+   1. If Yes, what purpose category if they choose.
+      1. If they haven't chosen a category, show UI where they could select.
+      2. If they have chosen a category, show UI where they could select an appeal.
+         1. If they have selected an appeal, show the correct list.
+         2. If they haven't selected an appeal, show them the list to select from.
+   2. If not (that means they have a response)
+      1. If player selected correct response. increase their points by one.
+         1. Increase their slide by 1.
+         2. Clear out other states
+      2. If the player did not select the correct response.
+         1. Stay on the same slide and decrease their points by one.
+         2. Claer out other states.
+   3. Player presses the back button.
+      1. If they have chosen an appeal. Remove that state.
+      2. If the player have chosen a purpose. Remove that state.
