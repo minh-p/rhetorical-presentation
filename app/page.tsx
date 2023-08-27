@@ -53,9 +53,9 @@ export default function Home() {
         <div className="bg-black rounded-full">
           {/*Circle Timer gotten from amazing package.*/}
           <CountdownCircleTimer
-            isPlaying={gameHasStarted}
+            isPlaying={gameHasStarted && roundIsActive}
             key={key}
-            duration={roundIsActive ? ROUND_DURATION_IN_SECONDS - 1 : 0}
+            duration={ROUND_DURATION_IN_SECONDS}
             colors={['#FCD34D', '#F7B801', '#A30000', '#800080', '#000000']}
             colorsTime={[
               ROUND_DURATION_IN_SECONDS,
