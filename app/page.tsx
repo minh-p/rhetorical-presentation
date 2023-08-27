@@ -38,7 +38,6 @@ export default function Home() {
             isPlaying
             key={key}
             duration={roundIsActive ? ROUND_DURATION_IN_SECONDS - 1 : 0}
-            initialRemainingTime={ROUND_DURATION_IN_SECONDS - 1}
             colors={['#FCD34D', '#F7B801', '#A30000', '#800080', '#000000']}
             colorsTime={[
               ROUND_DURATION_IN_SECONDS,
