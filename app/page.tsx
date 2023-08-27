@@ -30,13 +30,15 @@ export default function Home() {
     <section className="p-10">
       <div className="absolute top-0 right-0 left-0 bottom-[20vh] m-auto min-h-[70vh] max-h-screen w-screen">
         {/*The image component that will show the slide images*/}
-        <Image
-          src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-          alt="Background"
-          width="1920"
-          height="1080"
-          className="max-h-full max-w-[1920px] m-auto"
-        />
+        <div className="max-h-full overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+            alt="Background"
+            width="1920"
+            height="1080"
+            className="max-w-screen lx:max-w-[1920px] m-auto"
+          />
+        </div>
 
         <div className="hidden sm:block m-auto bg-black p-5 left-5 text-lx top-10 max-w-[1920px]">
           {/*Investors' Reactions*/}
