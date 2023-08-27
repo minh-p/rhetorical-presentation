@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
+import NextPrevButtons from './components/NextPrevButtons'
 
 const ROUND_DURATION_IN_SECONDS: number =
   Number(process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS) || 300
@@ -17,7 +18,6 @@ export default function Home() {
   const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
   const [chosenPurposeCategory, setChosenPurposeCategory] = useState<string>("")
   const [chosenAppeal, setChosenAppeal] = useState<string>("")
-  const [chosenResponseIndex, setChosenResponseIndex] = useState<string>("")
   */
 
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
@@ -25,6 +25,8 @@ export default function Home() {
   const [key, setKey] = useState<number>(0)
   const [playerPoints] = useState<number>(0)
   const [slideNumber] = useState<number>(1)
+  const [chosenResponseIndex, setChosenResponseIndex] = useState<number>(0)
+  const [numberOfResponses] = useState<number>(10)
 
   return (
     <section className="p-10">
@@ -38,6 +40,31 @@ export default function Home() {
             height="1080"
             className="max-w-screen lx:max-w-[1920px] m-auto"
           />
+        </div>
+
+        {/*Response Menu*/}
+        <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px]">
+          <div className="p-5 bg-white flex flex-row space-x-10">
+            <p>Purpose: Test</p>
+            <p>Appeal: Test</p>
+            <NextPrevButtons
+              prevFunction={() =>
+                setChosenResponseIndex((prevKey) => {
+                  if (prevKey > 0) return prevKey - 1
+                  return 0
+                })
+              }
+              nextFunction={() =>
+                setChosenResponseIndex((prevKey) => {
+                  if (prevKey < numberOfResponses) return prevKey + 1
+                  return numberOfResponses
+                })
+              }
+            />
+          </div>
+          <div className="bg-white p-5 grow">
+            [{chosenResponseIndex}/{numberOfResponses}] Chosen Response
+          </div>
         </div>
 
         <div className="hidden sm:block m-auto bg-black p-5 left-5 text-lx top-10 max-w-[1920px]">
@@ -107,8 +134,6 @@ export default function Home() {
           </p>
         </div>
       </div>
-
-      {/*Response Menu*/}
     </section>
   )
 }
