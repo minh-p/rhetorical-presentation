@@ -48,7 +48,7 @@ export default function Home() {
             ]}
             trailColor={'#000000'}
             size={120}
-            strokeWidth={7}
+            strokeWidth={6}
             onComplete={() => {
               setRoundStatusActive(false)
             }}
