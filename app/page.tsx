@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 
-const ROUND_DURATION_IN_SECONDS = 15 * 60
+const ROUND_DURATION_IN_SECONDS = process.env.ROUND_DURATION_IN_SECONDS || 900
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>("")
@@ -31,7 +31,7 @@ export default function Home() {
       <div className="absolute right-5 top-[70px]">
         <CountdownCircleTimer
           isPlaying
-          duration={ROUND_DURATION_IN_SECONDS}
+          duration={ROUND_DURATION_IN_SECONDS-1}
           colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
           colorsTime={[10, 6, 3, 0]}
           size={120}
