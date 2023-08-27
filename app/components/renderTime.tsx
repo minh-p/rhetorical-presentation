@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { TimeProps } from 'react-countdown-circle-timer'
 
 const formatSecondsToMinuteString = (time: number) => {
   const minutes = Math.floor(time / 60)
@@ -6,7 +6,7 @@ const formatSecondsToMinuteString = (time: number) => {
   return `${minutes}:${seconds}`
 }
 
-const renderTime = ({ remainingTime } : { [key: string]: number} ): ReactNode => {
+const renderTime = ({ remainingTime } : TimeProps) => {
   if (remainingTime === 0) {
     return <div className="timer">Time is up!</div>
   }
