@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run check-format ||
+(
+    echo "Need to run prettier. Run 'npm run format'"
+    false;
+)
+
+npm run lint ||
+(
+    echo "ESLint failed"
+    false;
+)
+
+npm run check-types ||
+(
+    echo "Some types are wrong. Look above. Maybe it's codgen if you're touching graphql. If not, good luck."
+    false;
+)
+
+echo "Trying to build before production ayy?"
+
+npm run build ||
+(
+    echo "Next Build failed unfortunately. Good luck. You can fix it."
+    false;
+)
+
+echo "Awesome! Committing!"

@@ -14,7 +14,7 @@ html {
 }
 
 :focus:not(:focus-visible) {
-    outline: none;
+  outline: none;
 }
 
 img {
@@ -27,10 +27,10 @@ label,
 button,
 select,
 summary,
-[type=radio],
-[type=submit],
-[type=checkbox] {
-    cursor: pointer;
+[type='radio'],
+[type='submit'],
+[type='checkbox'] {
+  cursor: pointer;
 }
 
 menu:not(article menu),
