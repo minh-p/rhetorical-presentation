@@ -46,7 +46,7 @@ export default function RootLayout({
             <Link href="mailto:vhuyminp@gmail.com">vhuyminp@gmail.com</Link>
           </p>
         </div>
-        <footer className="sm:hidden text-center absolute w-screen bottom-0 left-0 p-3 bg-[#f1f5f8]">
+        <footer className="sm:hidden text-center relative mt-[100vh] w-screen p-3 bg-[#f1f5f8]">
           <p>© Vu Huy Minh Pham. All Rights Reserved</p>
           <p>
             Email (School):{' '}
@@ -57,7 +57,7 @@ export default function RootLayout({
             <Link href="mailto:vhuyminp@gmail.com">vhuyminp@gmail.com</Link>
           </p>
         </footer>
-        <footer className="hidden sm:block xl:hidden text-center absolute w-screen bottom-0 left-0 p-3 bg-[#f1f5f8]">
+        <footer className="hidden sm:block xl:hidden text-center relative mt-[100vh] w-screen p-3 bg-[#f1f5f8]">
           <p>© Vu Huy Minh Pham. All Rights Reserved</p>
           <p>
             Emails: (School){' '}

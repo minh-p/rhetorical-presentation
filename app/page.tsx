@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 import NextPrevButtons from './components/NextPrevButtons'
+import Listbox from './components/Listbox'
 
 const ROUND_DURATION_IN_SECONDS: number =
   Number(process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS) || 300
@@ -32,7 +33,7 @@ export default function Home() {
     <section className="p-10">
       <div className="absolute top-0 right-0 left-0 bottom-[20vh] m-auto min-h-[70vh] max-h-screen w-screen">
         {/*The image component that will show the slide images*/}
-        <div className="max-h-full overflow-hidden">
+        <div className="max-h-full overflow-clip">
           <Image
             src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
             alt="Background"
@@ -43,10 +44,12 @@ export default function Home() {
         </div>
 
         {/*Response Menu*/}
-        <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px]">
-          <div className="p-5 bg-white flex flex-row space-x-10">
-            <p>Purpose: Test</p>
-            <p>Appeal: Test</p>
+        <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
+          <div className="p-5 bg-white flex flex-row w-[370px] max-w-[50%] space-x-10 overflow-visible">
+            <Listbox label="Purpose" />
+            <Listbox label="Appeal" />
+          </div>
+          <div className="bg-white p-0 lg:p-7 overflow-hidden">
             <NextPrevButtons
               prevFunction={() =>
                 setChosenResponseIndex((prevKey) => {
@@ -62,7 +65,7 @@ export default function Home() {
               }
             />
           </div>
-          <div className="bg-white p-5 grow">
+          <div className="bg-white p-5 grow overflow-y-scroll">
             [{chosenResponseIndex}/{numberOfResponses}] Chosen Response
           </div>
         </div>
