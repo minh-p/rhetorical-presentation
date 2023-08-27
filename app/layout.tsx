@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="sm:hidden text-center absolute p-5 left-0 w-screen top-0 bg-[#f1f5f8]">
           <h1>
             This experience is best suited for a larger screen: laptop, desktop,
-            or tablet.
+            or tablet. Please switch your device.
           </h1>
         </div>
         <div className="hidden sm:block text-center absolute p-2 left-0 w-screen top-0 bg-[#f1f5f8]">

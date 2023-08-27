@@ -6,36 +6,52 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 
 const ROUND_DURATION_IN_SECONDS: number =
-  Number(`${process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS}`) || 300
+  Number(process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS) || 300
+
+const NUMBER_OF_SLIDES: number =
+  Number(process.env.NEXT_PUBLIC_NUMBER_OF_SLIDES) || 10
 
 export default function Home() {
   /*
   const [imageSrc, setImageSrc] = useState<string>("")
-  const [playerPoint, setPlayerPoint] = useState<number>(0)
   const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
   const [chosenPurposeCategory, setChosenPurposeCategory] = useState<string>("")
   const [chosenAppeal, setChosenAppeal] = useState<string>("")
   const [chosenResponseIndex, setChosenResponseIndex] = useState<string>("")
   */
+
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
+  const [gameHasStarted, setGameStatusStarted] = useState<boolean>(false)
   const [key, setKey] = useState<number>(0)
+  const [playerPoints] = useState<number>(0)
+  const [slideNumber] = useState<number>(1)
 
   return (
     <section className="p-10">
-      {/*The image component that will show the slide images*/}
-      <Image
-        src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-        alt="Background"
-        width="1920"
-        height="1080"
-        className="absolute top-[200px] right-0 left-0 bottom-[200px] m-auto max-h-screen"
-      />
+      <div className="absolute top-0 right-0 left-0 bottom-[20vh] m-auto min-h-[70vh] max-h-screen w-screen">
+        {/*The image component that will show the slide images*/}
+        <Image
+          src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+          alt="Background"
+          width="1920"
+          height="1080"
+          className="max-h-full max-w-[1920px] m-auto"
+        />
 
-      <div className="text-center text-amber-300 absolute right-5 top-[70px]">
+        <div className="hidden sm:block m-auto bg-black p-5 left-5 text-lx top-10 max-w-[1920px]">
+          {/*Investors' Reactions*/}
+          <p className="text-white">Investor: Ha ha this is ridiculous</p>
+          {/*Image's Description */}
+          <p className="text-white">Slide&apos;s Description: </p>
+        </div>
+      </div>
+
+      {/*Timer and Round Functionality*/}
+      <div className="hidden sm:block text-center text-amber-300 absolute right-5 top-[70px]">
         <div className="bg-black rounded-full">
           {/*Circle Timer gotten from amazing package.*/}
           <CountdownCircleTimer
-            isPlaying
+            isPlaying={gameHasStarted}
             key={key}
             duration={roundIsActive ? ROUND_DURATION_IN_SECONDS - 1 : 0}
             colors={['#FCD34D', '#F7B801', '#A30000', '#800080', '#000000']}
@@ -58,15 +74,39 @@ export default function Home() {
         </div>
         {/*Button to end or restart the round.*/}
         <button
-          className="text-amber-300 my-2 py-2.5 px-2.5 mb-2 text-sm font-bold focus:outline-none bg-black border border-black border-2 rounded"
+          className="text-amber-300 my-2 py-2.5 px-2.5 ring-2 ring-[#FCD34D] mb-2 text-sm font-bold focus:outline-none bg-black border border-black border-2 rounded"
           onClick={() => {
+            if (!gameHasStarted) {
+              setGameStatusStarted(true)
+              return
+            }
             setRoundStatusActive(!roundIsActive)
             setKey((prevKey) => prevKey + 1)
           }}
         >
-          {roundIsActive ? 'Stop Round' : 'Restart Round'}
+          {gameHasStarted
+            ? roundIsActive
+              ? 'Stop Round'
+              : 'Restart Round'
+            : 'Start Game'}
         </button>
       </div>
+
+      {/*Player Stats Display*/}
+      <div className="hidden sm:block absolute flex flex-col space-y-1 right-7 top-[270px]">
+        <div className="text-center text-amber-300 text-sm focus:outline-none font-bold bg-black p-2.5 rounded">
+          <p>Points: {playerPoints}</p>
+        </div>
+
+        {/*Slide#*/}
+        <div className="text-center text-amber-300 text-sm focus:outline-none font-bold bg-black p-2.5 rounded">
+          <p>
+            Slide: {slideNumber}/{NUMBER_OF_SLIDES}
+          </p>
+        </div>
+      </div>
+
+      {/*Response Menu*/}
     </section>
   )
 }
