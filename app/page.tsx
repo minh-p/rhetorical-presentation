@@ -2,19 +2,20 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 
 const ROUND_DURATION_IN_SECONDS = process.env.ROUND_DURATION_IN_SECONDS ? parseInt(process.env.ROUND_DURATION_IN_SECONDS) : 900
 
 export default function Home() {
+  /*
   const [imageSrc, setImageSrc] = useState<string>("")
   const [playerPoint, setPlayerPoint] = useState<number>(0)
   const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
   const [chosenPurposeCategory, setChosenPurposeCategory] = useState<string>("")
   const [chosenAppeal, setChosenAppeal] = useState<string>("")
   const [chosenResponseIndex, setChosenResponseIndex] = useState<string>("")
+  */
 
   return (
     <section className="p-10">
