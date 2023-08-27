@@ -17,8 +17,6 @@ export default function Home() {
   /*
   const [imageSrc, setImageSrc] = useState<string>("")
   const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
-  const [chosenPurposeCategory, setChosenPurposeCategory] = useState<string>("")
-  const [chosenAppeal, setChosenAppeal] = useState<string>("")
   */
 
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
@@ -28,6 +26,9 @@ export default function Home() {
   const [slideNumber] = useState<number>(1)
   const [chosenResponseIndex, setChosenResponseIndex] = useState<number>(0)
   const [numberOfResponses] = useState<number>(10)
+  const [chosenPurposeCategory, setChosenPurposeCategory] =
+    useState<string>('Inform')
+  const [chosenAppeal, setChosenAppeal] = useState<string>('Ethos')
 
   return (
     <section className="p-10">
@@ -46,8 +47,20 @@ export default function Home() {
         {/*Response Menu*/}
         <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
           <div className="p-5 bg-white flex flex-row w-[370px] max-w-[50%] space-x-10 overflow-visible">
-            <Listbox label="Purpose" />
-            <Listbox label="Appeal" />
+            <Listbox
+              selected={chosenPurposeCategory}
+              setSelected={setChosenPurposeCategory}
+              top="-top-[180px]"
+              label="Purpose"
+              options={['Inform', 'Decisions', 'Explore']}
+            />
+            <Listbox
+              selected={chosenAppeal}
+              setSelected={setChosenAppeal}
+              top="-top-[180px]"
+              label="Appeal"
+              options={['Ethos', 'Pathos', 'Logos']}
+            />
           </div>
           <div className="bg-white p-0 lg:p-7 overflow-hidden">
             <NextPrevButtons
