@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 
-const ROUND_DURATION_IN_SECONDS = process.env.ROUND_DURATION_IN_SECONDS || 900
+const ROUND_DURATION_IN_SECONDS = process.env.ROUND_DURATION_IN_SECONDS ? parseInt(process.env.ROUND_DURATION_IN_SECONDS) : 900
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>("")
