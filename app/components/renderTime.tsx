@@ -1,9 +1,9 @@
 import type { TimeProps } from 'react-countdown-circle-timer'
 
 const formatSecondsToMinuteString = (time: number) => {
-  const minutes = Math.floor(time / 60)
-  const seconds = time % 60
-  return `${minutes}:${seconds}`
+  const date = new Date(0)
+  date.setSeconds(time)
+  return date.toISOString().substring(14, 19)
 }
 
 const renderTime = ({ remainingTime }: TimeProps) => {
