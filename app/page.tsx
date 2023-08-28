@@ -6,6 +6,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import renderTime from './components/renderTime'
 import NextPrevButtons from './components/NextPrevButtons'
 import Listbox from './components/Listbox'
+import useSWR from 'swr'
 
 const ROUND_DURATION_IN_SECONDS: number =
   Number(process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS) || 300
@@ -13,12 +14,16 @@ const ROUND_DURATION_IN_SECONDS: number =
 const NUMBER_OF_SLIDES: number =
   Number(process.env.NEXT_PUBLIC_NUMBER_OF_SLIDES) || 10
 
+// Fetcher function
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
 export default function Home() {
   /*
   const [imageSrc, setImageSrc] = useState<string>("")
   const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
   */
 
+  // States
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
   const [gameHasStarted, setGameStatusStarted] = useState<boolean>(false)
   const [key, setKey] = useState<number>(0)
@@ -27,8 +32,63 @@ export default function Home() {
   const [chosenResponseIndex, setChosenResponseIndex] = useState<number>(0)
   const [numberOfResponses] = useState<number>(10)
   const [chosenPurposeCategory, setChosenPurposeCategory] =
-    useState<string>('Inform')
-  const [chosenAppeal, setChosenAppeal] = useState<string>('Ethos')
+    useState<string>('none')
+  const [chosenAppeal, setChosenAppeal] = useState<string>('none')
+
+  // JSON
+  const { data, error } = useSWR('/api/staticdata', fetcher)
+
+  if (error) return <div>Data failed to load</div>
+  if (!data) return <div>No Game Data. Sorry!</div>
+
+  const gameData = JSON.parse(data)
+  const purposes: string[] = Object.keys(gameData.purposes)
+  let appeals: string[] = []
+
+  if (chosenPurposeCategory == 'none') {
+    setChosenPurposeCategory(purposes[0])
+  } else {
+    appeals = Object.keys(gameData.purposes[chosenPurposeCategory])
+    if (
+      chosenAppeal == 'none' &&
+      gameData.purposes[chosenPurposeCategory][appeals[0]]
+    ) {
+      setChosenAppeal(appeals[0])
+    } else if (
+      chosenAppeal != 'none' &&
+      !gameData.purposes[chosenPurposeCategory][chosenAppeal]
+    ) {
+      if (gameData.purposes[chosenPurposeCategory][appeals[0]]) {
+        setChosenAppeal(appeals[0])
+      } else {
+        setChosenAppeal('none')
+      }
+    }
+  }
+
+  if (appeals.length == 0) {
+    appeals[0] = 'none'
+  }
+
+  let topPurpose: string = '-top-[60px]'
+  let topAppeal: string = '-top-[60px]'
+
+  // Circumvent the safelisting through a very crude way
+  if (purposes.length == 1) {
+    topPurpose = '-top-[60px]'
+  } else if (purposes.length == 2) {
+    topPurpose = '-top-[120px]'
+  } else if (purposes.length == 3) {
+    topPurpose = '-top-[180px]'
+  }
+
+  if (appeals.length == 1) {
+    topAppeal = '-top-[108px]'
+  } else if (appeals.length == 2) {
+    topPurpose = '-top-[120px]'
+  } else if (appeals.length == 3) {
+    topAppeal = '-top-[180px]'
+  }
 
   return (
     <section className="p-10">
@@ -50,16 +110,16 @@ export default function Home() {
             <Listbox
               selected={chosenPurposeCategory}
               setSelected={setChosenPurposeCategory}
-              top="-top-[180px]"
+              top={topPurpose}
               label="Purpose"
-              options={['Inform', 'Decisions', 'Explore']}
+              options={purposes}
             />
             <Listbox
               selected={chosenAppeal}
               setSelected={setChosenAppeal}
-              top="-top-[180px]"
+              top={topAppeal}
               label="Appeal"
-              options={['Ethos', 'Pathos', 'Logos']}
+              options={appeals}
             />
           </div>
           <div className="bg-white p-0 lg:p-7 overflow-hidden">
