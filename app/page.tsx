@@ -148,9 +148,7 @@ export default function Home() {
   ) {
     if (chosenResponse == '') {
       setChosenResponse(
-        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal][
-          chosenResponseIndex
-        ]
+        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal][0]
       )
     } else if (
       chosenResponse != '' &&
@@ -159,7 +157,11 @@ export default function Home() {
           chosenResponseIndex
         ]
     ) {
-      setChosenResponseIndex(0)
+      setChosenResponse(
+        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal][
+          chosenResponseIndex
+        ]
+      )
     }
   } else if (chosenResponse != '') {
     setChosenResponse('')
@@ -221,7 +223,9 @@ export default function Home() {
               }
               nextFunction={() =>
                 setChosenResponseIndex((prevKey) => {
-                  if (prevKey < numberOfResponses - 1) return prevKey + 1
+                  if (prevKey < numberOfResponses - 1) {
+                    return prevKey + 1
+                  }
                   return numberOfResponses - 1
                 })
               }
