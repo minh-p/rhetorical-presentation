@@ -176,6 +176,7 @@ export default function Home() {
     setChosenPurposeCategory('none')
     setMultiplier(1)
     setPlayerWinningStatus(false)
+    setGameResponsesLeft(gameResponses)
   }
 
   console.log(chosenResponse)
@@ -318,6 +319,7 @@ export default function Home() {
           onClick={() => {
             if (!gameHasStarted) {
               resetStats()
+              setKey((prevKey) => prevKey + 1)
               setGameStatusStarted(true)
               return
             }
@@ -326,8 +328,8 @@ export default function Home() {
               setImageSrc(gameSlides.defaultImage)
               setSlideDescription('')
             }
-            setRoundStatusActive(!roundIsActive)
             setKey((prevKey) => prevKey + 1)
+            setRoundStatusActive(!roundIsActive)
           }}
         >
           {playerWon

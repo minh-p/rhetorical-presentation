@@ -1,7 +1,7 @@
 {
-  "defaultImage": "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
-  "failedImage": "https://lh3.googleusercontent.com/pw/AIL4fc8FA_EMSeinNrb72u1gv76ab11gBGdRyUtQTUeM0HEXFgmQjkkkihc1a8dGJ6ybwPCj_q4fZxMLktepEePLWw0d56_vDsehhBMfk9UM15Flc-tHd_EXA8TVrF4ItbrGoQPVoEuR3CbYy2OWb5zFq8FF=w1024-h512-s-no?authuser=0",
-  "successfulImage": "https://lh3.googleusercontent.com/pw/AIL4fc98lkGT84r-3Nb0Hey3ptIMGp1b4-Q1W0DqjYnj0TmvgcF0wF27P1DyXqZhRsZHNPBeg-eCcakT8LiyKxGd-lS_fgpX4jk0N4eh6bxQIYhCuICNa2PE77mE1ARaNZbE9lauARbVMU4Fpkj2VDC_Fi4BYFi3ePXyzPnPBGorrjC-nA8lamsFe36_zzit3Sofv1BV_7zGmtBKlWuVJBvntf6tniIMYdo1H4CIYcc8K-Wp2eZlXMsDfusvC8JJG5P4H06-CmbwavSt9tE7qNIeTREjlac0H2LSHorNGxfA1N9CKY2rXySQaWxIrrt0E61koAh859MtRmp5gFVQiyXz-RUUqeES62x7rZ9C-kpIRucP1b13rOGWS1I4e6gXpZbaShc1n6LXJhpScVWxwsV6PHLaXlwhdvb3IFHG2YaBPKbqNCaZANrtgS863lmpfomCsT60fzr5EBZddtp_Xyeunscz0Q-QWEGI5QPe_QQrEDvT21GFLdaUS3kMLxCtoY_6RVSTdqPte2z3YF_OevvwUKkYjWIHeXMOWgoLn05G5oEc8XSzpjCGDPiqqEo1of8lvuaA5MdMybE738rgr9O1RnIzsifR2K68AkjCroKG9lhalaTZg-VQ5rb8UNVxZZmAnuWlJgge_dSzSikuhvlYRsEQO3q2j48B2Mn_2q6UWaTzLlUwG-j70K73vZtSnPXnbj4xYnbShe0QKTRiZChwo3l4Vh92AwmveMFi2Md8XtO6yQRcMdyUNYIVd7TbAa7caeep_yZhZBzdFW4lVxHEJdfP7NbHuNXRCww2pTXS-h5E38ADsxomeACEKsdrrqD7ZS4ei8O3Y_1-nYYs1qnU9z8FNAiFov8DUWcSWamnD2a82ZLqw48UXt27Xf0zfvL_KYveyRZWJicMsH35LSYrw9QLb4Cp0SGCBa1BWWYCVnVzBrnw9A6R7BXzA-FadKqpSc0jI9mwZ3_b5ErVV0a4wOTeGJiaFfgUgsBsW8swMDQ5MouhMAPx8aFegqcRvmFY7hmX7g=w1280-h853-s-no?authuser=0",
+  "defaultImage": "/default.avif",
+  "failedImage": "/failed.jpg",
+  "successfulImage": "/success.avif",
   "numberOfSlides": "10",
   "slides": [
     [
