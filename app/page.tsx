@@ -179,8 +179,6 @@ export default function Home() {
     setGameResponsesLeft(gameResponses)
   }
 
-  console.log(chosenResponse)
-
   return (
     <section className="p-10">
       <div className="absolute top-0 right-0 left-0 bottom-[20vh] m-auto min-h-[70vh] max-h-screen w-screen">
@@ -256,7 +254,10 @@ export default function Home() {
                     setPlayerWinningStatus(true)
                   } else {
                     setSlideNumber(slideNumber + 1)
+                    setImageSrc(gameSlides.slides[slideNumber + 1][0])
+                    setSlideDescription(gameSlides.slides[slideNumber + 1][1])
                   }
+                  setChosenResponse('')
                   gameResponsesLeft.purposes[chosenPurposeCategory][
                     chosenAppeal
                   ].splice(chosenResponseIndex, 1)
