@@ -14,13 +14,18 @@ const ROUND_DURATION_IN_SECONDS: number =
 // Fetcher function
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+type GameResponses = {
+  purposes?: { [key: string]: { [key: string]: string[] } }
+}
+
 export default function Home() {
   // States
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
   const [gameHasStarted, setGameStatusStarted] = useState<boolean>(false)
+  const [playerWon, setPlayerWinningStatus] = useState<boolean>(false)
   const [key, setKey] = useState<number>(0)
-  const [playerPoints, setPlayerPoints] = useState<number>(0)
-  const [slideNumber, setSlides] = useState<number>(0)
+  const [playerPoint, setPlayerPoint] = useState<number>(0)
+  const [slideNumber, setSlideNumber] = useState<number>(0)
   const [chosenResponseIndex, setChosenResponseIndex] = useState<number>(0)
   const [numberOfResponses, setNumberOfResponses] = useState<number>(0)
   const [chosenPurposeCategory, setChosenPurposeCategory] =
@@ -29,6 +34,8 @@ export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>('')
   const [chosenResponse, setChosenResponse] = useState<string>('')
   const [slideDescription, setSlideDescription] = useState<string>('')
+  const [multiplier, setMultiplier] = useState<number>(1)
+  const [gameResponsesLeft, setGameResponsesLeft] = useState<GameResponses>({})
 
   // JSON Game Data Responses
   const responses = useSWR('/api/staticdata/responses', fetcher)
@@ -45,20 +52,29 @@ export default function Home() {
   const purposes: string[] = Object.keys(gameResponses.purposes)
   let appeals: string[] = []
 
-  if (!gameResponses.purposes[chosenPurposeCategory]) {
+  if (Object.keys(gameResponsesLeft).length == 0) {
+    setGameResponsesLeft(gameResponses)
+    return <div>Loading...</div>
+  }
+
+  if (!gameResponsesLeft.purposes) {
+    return <div>Loading...</div>
+  }
+
+  if (!gameResponsesLeft.purposes[chosenPurposeCategory]) {
     setChosenPurposeCategory(purposes[0])
   } else {
-    appeals = Object.keys(gameResponses.purposes[chosenPurposeCategory])
+    appeals = Object.keys(gameResponsesLeft.purposes[chosenPurposeCategory])
     if (
       chosenAppeal == 'none' &&
-      gameResponses.purposes[chosenPurposeCategory][appeals[0]]
+      gameResponsesLeft.purposes[chosenPurposeCategory][appeals[0]]
     ) {
       setChosenAppeal(appeals[0])
     } else if (
       chosenAppeal != 'none' &&
-      !gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
+      !gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal]
     ) {
-      if (gameResponses.purposes[chosenPurposeCategory][appeals[0]]) {
+      if (gameResponsesLeft.purposes[chosenPurposeCategory][appeals[0]]) {
         setChosenAppeal(appeals[0])
       } else {
         setChosenAppeal('none')
@@ -67,15 +83,15 @@ export default function Home() {
   }
 
   if (
-    gameResponses.purposes[chosenPurposeCategory] &&
-    gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
+    gameResponsesLeft.purposes[chosenPurposeCategory] &&
+    gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal]
   ) {
     if (
       numberOfResponses !=
-      gameResponses.purposes[chosenPurposeCategory][chosenAppeal].length
+      gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal].length
     ) {
       setNumberOfResponses(
-        gameResponses.purposes[chosenPurposeCategory][chosenAppeal].length
+        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal].length
       )
     }
   } else if (numberOfResponses != 0) {
@@ -89,6 +105,8 @@ export default function Home() {
   }
 
   if (
+    gameHasStarted &&
+    roundIsActive &&
     slideNumber == 0 &&
     roundIsActive &&
     gameHasStarted &&
@@ -123,36 +141,44 @@ export default function Home() {
   }
 
   if (
-    gameResponses.purposes[chosenPurposeCategory] &&
-    gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
+    gameHasStarted &&
+    roundIsActive &&
+    gameResponsesLeft.purposes[chosenPurposeCategory] &&
+    gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal]
   ) {
     if (chosenResponse == '') {
       setChosenResponse(
-        gameResponses.purposes[chosenPurposeCategory][chosenAppeal][
+        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal][
           chosenResponseIndex
         ]
       )
     } else if (
       chosenResponse != '' &&
       chosenResponse !=
-        gameResponses.purposes[chosenPurposeCategory][chosenAppeal][
+        gameResponsesLeft.purposes[chosenPurposeCategory][chosenAppeal][
           chosenResponseIndex
         ]
     ) {
       setChosenResponseIndex(0)
     }
+  } else if (chosenResponse != '') {
+    setChosenResponse('')
   }
 
   const resetStats = () => {
     // Restart Player Stats
-    setPlayerPoints(0)
-    setSlides(0)
+    setPlayerPoint(0)
+    setSlideNumber(0)
     setChosenResponseIndex(0)
     setNumberOfResponses(0)
     setChosenAppeal('none')
     setChosenResponse('')
     setChosenPurposeCategory('none')
+    setMultiplier(1)
+    setPlayerWinningStatus(false)
   }
+
+  console.log(chosenResponse)
 
   return (
     <section className="p-10">
@@ -170,7 +196,7 @@ export default function Home() {
 
         {/*Response Menu*/}
         <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
-          <div className="w-[240px] p-5 bg-white flex flex-row w-[370px] space-x-5 overflow-visible">
+          <div className="w-[250px] min-w-[250px] max-w-[250px] p-5 bg-white flex flex-row space-x-5 overflow-visible">
             <Listbox
               selected={chosenPurposeCategory}
               setSelected={setChosenPurposeCategory}
@@ -186,7 +212,7 @@ export default function Home() {
               options={appeals}
             />
           </div>
-          <div className="bg-white p-0 lg:p-7 overflow-hidden">
+          <div className="bg-white p-0 min-w-[100px] max-w-[100px] w-[100px] overflow-hidden">
             <NextPrevButtons
               prevFunction={() =>
                 setChosenResponseIndex((prevKey) => {
@@ -204,16 +230,41 @@ export default function Home() {
           </div>
           <div className="bg-white p-5 grow overflow-y-scroll overflow-x-scroll">
             [{numberOfResponses > 0 ? chosenResponseIndex + 1 : 0}/
-            {numberOfResponses}] Chosen Response
-            <br />
-            {chosenResponse}
+            {numberOfResponses}] {chosenResponse}
           </div>
 
           {/*Reponse Submit Button*/}
-          <div className="bg-white p-2 lg:p-7 overflow-hidden">
+          <div className="bg-white p-2 py-8 w-[93px] min-w-[93px] max-w-[93px] overflow-hidden">
             <button
               type="button"
               className="max-h-[40px] bg-gray-800 text-white rounded py-2 hover:bg-red-700 hover:text-white px-3 my-6 lg:my-0"
+              onClick={() => {
+                if (!gameResponsesLeft.purposes) return
+                if (
+                  gameSlides.slides[slideNumber][2] == chosenResponse &&
+                  slideNumber <= gameSlides.slides.length - 1
+                ) {
+                  setPlayerPoint(playerPoint + multiplier)
+                  setMultiplier(multiplier + 1)
+                  if (slideNumber == gameSlides.slides.length - 1) {
+                    // Player wins
+                    setImageSrc(gameSlides.successfulImage)
+                    setSlideDescription('')
+                    setGameStatusStarted(false)
+                    setRoundStatusActive(true)
+                    setPlayerWinningStatus(true)
+                  } else {
+                    setSlideNumber(slideNumber + 1)
+                  }
+                  gameResponsesLeft.purposes[chosenPurposeCategory][
+                    chosenAppeal
+                  ].splice(chosenResponseIndex, 1)
+                  setGameResponsesLeft(gameResponsesLeft)
+                } else {
+                  setPlayerPoint(playerPoint - 1)
+                  setMultiplier(1)
+                }
+              }}
             >
               Submit
             </button>
@@ -250,6 +301,11 @@ export default function Home() {
             size={120}
             strokeWidth={6}
             onComplete={() => {
+              if (slideNumber <= gameSlides.slides.length - 1) {
+                setImageSrc(gameSlides.failedImage)
+              } else {
+                setImageSrc(gameSlides.successfulImage)
+              }
               setRoundStatusActive(false)
             }}
           >
@@ -261,15 +317,22 @@ export default function Home() {
           className="text-amber-300 my-2 py-2.5 px-2.5 ring-2 ring-[#FCD34D] mb-2 text-sm font-bold focus:outline-none bg-black border border-black border-2 rounded"
           onClick={() => {
             if (!gameHasStarted) {
+              resetStats()
               setGameStatusStarted(true)
               return
             }
-            if (!roundIsActive) resetStats()
+            if (roundIsActive == false) resetStats()
+            if (roundIsActive == true) {
+              setImageSrc(gameSlides.defaultImage)
+              setSlideDescription('')
+            }
             setRoundStatusActive(!roundIsActive)
             setKey((prevKey) => prevKey + 1)
           }}
         >
-          {gameHasStarted
+          {playerWon
+            ? 'Restart Game'
+            : gameHasStarted
             ? roundIsActive
               ? 'Stop Round'
               : 'Restart Round'
@@ -280,13 +343,13 @@ export default function Home() {
       {/*Player Stats Display*/}
       <div className="hidden sm:block absolute flex flex-col space-y-1 right-7 top-[270px]">
         <div className="text-center text-amber-300 text-sm focus:outline-none font-bold bg-black p-2.5 rounded">
-          <p>Points: {playerPoints}</p>
+          <p>Points: {playerPoint}</p>
         </div>
 
         {/*Slide#*/}
         <div className="text-center text-amber-300 text-sm focus:outline-none font-bold bg-black p-2.5 rounded">
           <p>
-            Slide: {slideNumber + 1}/{gameSlides.numberOfSlides}
+            Slide: {slideNumber + 1}/{gameSlides.slides.length}
           </p>
         </div>
       </div>
