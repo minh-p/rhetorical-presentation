@@ -285,7 +285,7 @@ export default function Home() {
 
         <div className="hidden sm:block m-auto bg-black p-5 left-5 text-lx top-10 max-w-[1920px]">
           {/*Investors' Reactions*/}
-          <p className="text-white">Investor: Ha ha this is ridiculous</p>
+          {/*<p className="text-white">Investor: Ha ha this is ridiculous</p>*/}
           {/*Image's Description */}
           <p className="text-white">
             Slide&apos;s Description: {slideDescription}
