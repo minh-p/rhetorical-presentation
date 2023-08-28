@@ -106,7 +106,7 @@ export default function Home() {
 
         {/*Response Menu*/}
         <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
-          <div className="p-5 bg-white flex flex-row w-[370px] max-w-[50%] space-x-10 overflow-visible">
+          <div className="w-[240px] p-5 bg-white flex flex-row w-[370px] space-x-5 overflow-visible">
             <Listbox
               selected={chosenPurposeCategory}
               setSelected={setChosenPurposeCategory}
@@ -140,6 +140,18 @@ export default function Home() {
           </div>
           <div className="bg-white p-5 grow overflow-y-scroll">
             [{chosenResponseIndex}/{numberOfResponses}] Chosen Response
+          </div>
+
+          {/*Reponse Submit Button*/}
+          <div className="bg-white p-2 lg:p-7 overflow-hidden">
+            <button
+              type="button"
+              className="max-h-[40px] bg-gray-800 text-white rounded py-2 hover:bg-red-700 hover:text-white px-3 my-6 lg:my-0"
+            >
+              <div className="flex flex-row align-middle">
+                <p>Submit</p>
+              </div>
+            </button>
           </div>
         </div>
 
