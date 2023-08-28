@@ -4,7 +4,7 @@ import { promises as fs } from 'fs'
 
 const GET = async () => {
   const jsonDirectory = path.join(process.cwd(), 'json')
-  const data = await fs.readFile(jsonDirectory + '/data.json', 'utf8')
+  const data = await fs.readFile(jsonDirectory + '/responses.json', 'utf8')
   return NextResponse.json(data)
 }
 

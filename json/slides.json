@@ -1,0 +1,11 @@
+{
+  "defaultImage": "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
+  "numberOfSlides": "10",
+  "slides": [
+    [
+      "https://t3.ftcdn.net/jpg/00/38/50/86/360_F_38508649_mkoKMWJbMD1vfBGGOQ4DZXwKYsvJ8b2k.jpg",
+      "You see a newspaper with details about a survey toward students who are struggling in school. The survey states that more than 50% of students struggle due to a lack of guidance out of...",
+      "Investors,  there is a great current demand in the market for a education technology system that will allow students to ask anonymous questions to a trusted adult on campus with only a username and password to authenticate their account with the school's access code. As you can see in our county's recent newspaper, students do not have access to a great source of guidance. When asked, they either said it was hard to reach out for guidance while others said they were not comfortable showing up in person. Some of them would like to be anonymous while still being able to keep a line of conversation."
+    ]
+  ]
+}

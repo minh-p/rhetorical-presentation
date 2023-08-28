@@ -11,59 +11,91 @@ import useSWR from 'swr'
 const ROUND_DURATION_IN_SECONDS: number =
   Number(process.env.NEXT_PUBLIC_ROUND_DURATION_IN_SECONDS) || 300
 
-const NUMBER_OF_SLIDES: number =
-  Number(process.env.NEXT_PUBLIC_NUMBER_OF_SLIDES) || 10
-
 // Fetcher function
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function Home() {
-  /*
-  const [imageSrc, setImageSrc] = useState<string>("")
-  const [isSelectingResponse, setIsSelectingResponseState] = useState<boolean>(false)
-  */
-
   // States
   const [roundIsActive, setRoundStatusActive] = useState<boolean>(true)
   const [gameHasStarted, setGameStatusStarted] = useState<boolean>(false)
   const [key, setKey] = useState<number>(0)
-  const [playerPoints] = useState<number>(0)
-  const [slideNumber] = useState<number>(1)
+  const [playerPoints, setPlayerPoints] = useState<number>(0)
+  const [slideNumber, setSlides] = useState<number>(0)
   const [chosenResponseIndex, setChosenResponseIndex] = useState<number>(0)
-  const [numberOfResponses] = useState<number>(10)
+  const [numberOfResponses, setNumberOfResponses] = useState<number>(0)
   const [chosenPurposeCategory, setChosenPurposeCategory] =
     useState<string>('none')
   const [chosenAppeal, setChosenAppeal] = useState<string>('none')
+  const [imageSrc, setImageSrc] = useState<string>('')
+  const [chosenResponse, setChosenResponse] = useState<string>('')
+  const [slideDescription, setSlideDescription] = useState<string>('')
 
-  // JSON
-  const { data, error } = useSWR('/api/staticdata', fetcher)
+  // JSON Game Data Responses
+  const responses = useSWR('/api/staticdata/responses', fetcher)
+  // JSON Game Data Slides (Images and Descriptions)
+  const slides = useSWR('/api/staticdata/slides', fetcher)
 
-  if (error) return <div>Data failed to load</div>
-  if (!data) return <div>No Game Data. Sorry!</div>
+  if (responses.error) return <div>Data (responses) failed to load</div>
+  if (!responses.data) return <div>No (responses) Game Data. Sorry!</div>
 
-  const gameData = JSON.parse(data)
-  const purposes: string[] = Object.keys(gameData.purposes)
+  if (slides.error) return <div>Data (slides) failed to load</div>
+  if (!slides.data) return <div>No Game Data (slides). Sorry!</div>
+
+  const gameResponses = JSON.parse(responses.data)
+  const purposes: string[] = Object.keys(gameResponses.purposes)
   let appeals: string[] = []
 
-  if (chosenPurposeCategory == 'none') {
+  if (!gameResponses.purposes[chosenPurposeCategory]) {
     setChosenPurposeCategory(purposes[0])
   } else {
-    appeals = Object.keys(gameData.purposes[chosenPurposeCategory])
+    appeals = Object.keys(gameResponses.purposes[chosenPurposeCategory])
     if (
       chosenAppeal == 'none' &&
-      gameData.purposes[chosenPurposeCategory][appeals[0]]
+      gameResponses.purposes[chosenPurposeCategory][appeals[0]]
     ) {
       setChosenAppeal(appeals[0])
     } else if (
       chosenAppeal != 'none' &&
-      !gameData.purposes[chosenPurposeCategory][chosenAppeal]
+      !gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
     ) {
-      if (gameData.purposes[chosenPurposeCategory][appeals[0]]) {
+      if (gameResponses.purposes[chosenPurposeCategory][appeals[0]]) {
         setChosenAppeal(appeals[0])
       } else {
         setChosenAppeal('none')
       }
     }
+  }
+
+  if (
+    gameResponses.purposes[chosenPurposeCategory] &&
+    gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
+  ) {
+    if (
+      numberOfResponses !=
+      gameResponses.purposes[chosenPurposeCategory][chosenAppeal].length
+    ) {
+      setNumberOfResponses(
+        gameResponses.purposes[chosenPurposeCategory][chosenAppeal].length
+      )
+    }
+  } else if (numberOfResponses != 0) {
+    setNumberOfResponses(0)
+  }
+
+  const gameSlides = JSON.parse(slides.data)
+
+  if (imageSrc == '' && (!roundIsActive || !gameHasStarted)) {
+    setImageSrc(gameSlides.defaultImage)
+  }
+
+  if (
+    slideNumber == 0 &&
+    roundIsActive &&
+    gameHasStarted &&
+    imageSrc != gameSlides.slides[slideNumber][0]
+  ) {
+    setImageSrc(gameSlides.slides[slideNumber][0])
+    setSlideDescription(gameSlides.slides[slideNumber][1])
   }
 
   if (appeals.length == 0) {
@@ -90,13 +122,45 @@ export default function Home() {
     topAppeal = '-top-[180px]'
   }
 
+  if (
+    gameResponses.purposes[chosenPurposeCategory] &&
+    gameResponses.purposes[chosenPurposeCategory][chosenAppeal]
+  ) {
+    if (chosenResponse == '') {
+      setChosenResponse(
+        gameResponses.purposes[chosenPurposeCategory][chosenAppeal][
+          chosenResponseIndex
+        ]
+      )
+    } else if (
+      chosenResponse != '' &&
+      chosenResponse !=
+        gameResponses.purposes[chosenPurposeCategory][chosenAppeal][
+          chosenResponseIndex
+        ]
+    ) {
+      setChosenResponseIndex(0)
+    }
+  }
+
+  const resetStats = () => {
+    // Restart Player Stats
+    setPlayerPoints(0)
+    setSlides(0)
+    setChosenResponseIndex(0)
+    setNumberOfResponses(0)
+    setChosenAppeal('none')
+    setChosenResponse('')
+    setChosenPurposeCategory('none')
+  }
+
   return (
     <section className="p-10">
       <div className="absolute top-0 right-0 left-0 bottom-[20vh] m-auto min-h-[70vh] max-h-screen w-screen">
         {/*The image component that will show the slide images*/}
         <div className="max-h-full overflow-clip">
           <Image
-            src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+            src={imageSrc}
             alt="Background"
             width="1920"
             height="1080"
@@ -132,14 +196,17 @@ export default function Home() {
               }
               nextFunction={() =>
                 setChosenResponseIndex((prevKey) => {
-                  if (prevKey < numberOfResponses) return prevKey + 1
-                  return numberOfResponses
+                  if (prevKey < numberOfResponses - 1) return prevKey + 1
+                  return numberOfResponses - 1
                 })
               }
             />
           </div>
-          <div className="bg-white p-5 grow overflow-y-scroll">
-            [{chosenResponseIndex}/{numberOfResponses}] Chosen Response
+          <div className="bg-white p-5 grow overflow-y-scroll overflow-x-scroll">
+            [{numberOfResponses > 0 ? chosenResponseIndex + 1 : 0}/
+            {numberOfResponses}] Chosen Response
+            <br />
+            {chosenResponse}
           </div>
 
           {/*Reponse Submit Button*/}
@@ -148,9 +215,7 @@ export default function Home() {
               type="button"
               className="max-h-[40px] bg-gray-800 text-white rounded py-2 hover:bg-red-700 hover:text-white px-3 my-6 lg:my-0"
             >
-              <div className="flex flex-row align-middle">
-                <p>Submit</p>
-              </div>
+              Submit
             </button>
           </div>
         </div>
@@ -159,7 +224,9 @@ export default function Home() {
           {/*Investors' Reactions*/}
           <p className="text-white">Investor: Ha ha this is ridiculous</p>
           {/*Image's Description */}
-          <p className="text-white">Slide&apos;s Description: </p>
+          <p className="text-white">
+            Slide&apos;s Description: {slideDescription}
+          </p>
         </div>
       </div>
 
@@ -197,6 +264,7 @@ export default function Home() {
               setGameStatusStarted(true)
               return
             }
+            if (!roundIsActive) resetStats()
             setRoundStatusActive(!roundIsActive)
             setKey((prevKey) => prevKey + 1)
           }}
@@ -218,7 +286,7 @@ export default function Home() {
         {/*Slide#*/}
         <div className="text-center text-amber-300 text-sm focus:outline-none font-bold bg-black p-2.5 rounded">
           <p>
-            Slide: {slideNumber}/{NUMBER_OF_SLIDES}
+            Slide: {slideNumber + 1}/{gameSlides.numberOfSlides}
           </p>
         </div>
       </div>
