@@ -238,7 +238,12 @@ export default function Home() {
               type="button"
               className="max-h-[40px] bg-gray-800 text-white rounded py-2 hover:bg-red-700 hover:text-white px-3 my-6 lg:my-0"
               onClick={() => {
-                if (!gameResponsesLeft.purposes) return
+                if (
+                  !gameResponsesLeft.purposes ||
+                  !gameHasStarted ||
+                  !roundIsActive
+                )
+                  return
                 if (
                   gameSlides.slides[slideNumber][2] == chosenResponse &&
                   slideNumber <= gameSlides.slides.length - 1
