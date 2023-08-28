@@ -191,12 +191,38 @@ export default function Home() {
             alt="Background"
             width="1920"
             height="1080"
-            className="max-w-screen lx:max-w-[1920px] m-auto"
+            className="max-w-screen mt-0 lg:max-w-[1920px] m-auto border-solid border-2 border-black"
           />
         </div>
 
+        <div
+          className={`hidden ${
+            gameHasStarted ? 'hidden' : 'sm:block'
+          } block m-auto border-solid border-black border-2 border-b-0 bg-white p-5 left-5 text-lx top-10 max-w-[1920px]`}
+        >
+          {/*Investors' Reactions*/}
+          {/*<p className="text-white">Investor: Ha ha this is ridiculous</p>*/}
+          {/*Image's Description */}
+          <p className="font-bold text-black">
+            Instructions: Choose the best response for the slide&apos;s
+            description. Select purpose and appeal from selection buttons. The
+            Next and Previous Buttons is for cycling through responses of the
+            same purpose and appeal. Have fun! :)
+          </p>
+        </div>
+
+        <div className="hidden sm:block m-auto bg-white border-solid border-black border-2 border-b-0 p-5 left-5 text-lx top-10 max-w-[1920px]">
+          {/*Investors' Reactions*/}
+          {/*<p className="text-white">Investor: Ha ha this is ridiculous</p>*/}
+          {/*Image's Description */}
+          <p className="text-black">
+            <span className="font-bold">Slide&apos;s Description:</span>{' '}
+            {slideDescription}
+          </p>
+        </div>
+
         {/*Response Menu*/}
-        <div className="hidden sm:flex sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
+        <div className="hidden sm:flex border-solid border-2 border-black sm:flex-row space-x-2 m-auto bg-black left-5 text-lx top-10 max-w-[1920px] max-h-[100px]">
           <div className="w-[250px] min-w-[250px] max-w-[250px] p-5 bg-white flex flex-row space-x-5 overflow-visible">
             <Listbox
               selected={chosenPurposeCategory}
@@ -281,15 +307,6 @@ export default function Home() {
               Submit
             </button>
           </div>
-        </div>
-
-        <div className="hidden sm:block m-auto bg-black p-5 left-5 text-lx top-10 max-w-[1920px]">
-          {/*Investors' Reactions*/}
-          {/*<p className="text-white">Investor: Ha ha this is ridiculous</p>*/}
-          {/*Image's Description */}
-          <p className="text-white">
-            Slide&apos;s Description: {slideDescription}
-          </p>
         </div>
       </div>
 
