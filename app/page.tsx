@@ -271,6 +271,7 @@ export default function Home() {
                     chosenAppeal
                   ].splice(chosenResponseIndex, 1)
                   setGameResponsesLeft(gameResponsesLeft)
+                  setChosenResponseIndex(0)
                 } else if (!playerWon) {
                   setPlayerPoint(playerPoint - 1)
                   setMultiplier(1)
