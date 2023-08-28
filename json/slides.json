@@ -2,7 +2,6 @@
   "defaultImage": "/default.avif",
   "failedImage": "/failed.jpg",
   "successfulImage": "/success.avif",
-  "numberOfSlides": "10",
   "slides": [
     [
       "https://t3.ftcdn.net/jpg/00/38/50/86/360_F_38508649_mkoKMWJbMD1vfBGGOQ4DZXwKYsvJ8b2k.jpg",

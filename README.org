@@ -9,9 +9,9 @@ Everything will be stored in the source code of the program. That includes the i
 ** Data
 Responses and data will be a single JSON file within a directory called data/.
 As you can see, the presentations, will have a description about an image that's shown as presentation, its image link, and the words we can say.
+_responses.json_
 #+BEGIN_SRC javascript
 {
-    "numberOfSlides": "10",
     "purposes": {
         "inform": {
             "logos": [
@@ -28,7 +28,23 @@ As you can see, the presentations, will have a description about an image that's
     }
 }
 #+END_SRC
+_slides.json_
+#+BEGIN_SRC javascript
+{
+    "defaultImage": "/default.avif",
+    "failedImage": "/failed.jpg",
+    "successfulImage": "/success.avif",
+    "slides": {
+        [
+            "https://t3.ftcdn.net/jpg/00/38/50/86/360_F_38508649_mkoKMWJbMD1vfBGGOQ4DZXwKYsvJ8b2k.jpg"
+            "Your first slide is a newspaper with details about a survey toward students who are struggling in school. The survey states that more than 50% of students struggle due to a lack of guidance out of...",
+            "Investors, there is currently a great demand in the market for an education technology system that will allow students to ask anonymous questions to a trusted adult on campus with only a username and password to authenticate their account with the school's access code. As you can see in our county's recent newspaper, many students do not have access to a great source of guidance. When asked, some either said it was hard to reach out for guidance while others said they were not comfortable showing up in person. Some of them would like to be anonymous while still being able to keep a line of conversation."
+        ]
+    }
+}
+#+END_SRC
 If the player chooses the wrong option, then there will be a negative reaction from an investor. These reactions will be stored in a JSON file also.
+/Unfortunately, I didn't have enough time to do this/
 #+BEGIN_SRC javascript
 {
     "investors": ["All", "Elon Musk", "Donald Trump", "Jeff Bezos", "Kevin O' Leary", "Mark Cuban", "Barbara Corcoran", "Lori Greiner"],
